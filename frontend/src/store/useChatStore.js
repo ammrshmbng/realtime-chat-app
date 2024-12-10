@@ -48,6 +48,10 @@ export const useChatStore = create((set, get) => ({
     if (!selectedUser) return;
 
     const socket = useAuthStore.getState().socket;
+    if (!socket) {
+      toast.error('Koneksi socket tidak tersedia');
+      return;
+    }
 
     socket.on("newMessage", (newMessage) => {
       const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
@@ -61,6 +65,11 @@ export const useChatStore = create((set, get) => ({
 
   unsubscribeFromMessages: () => {
     const socket = useAuthStore.getState().socket;
+    if (!socket) {
+      console.warn('Tidak dapat unsubscribe: socket tidak tersedia');
+      return;
+    }
+    
     socket.off("newMessage");
   },
 
