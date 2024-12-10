@@ -5,12 +5,16 @@ export const generateToken = (userId, res) => {
     expiresIn: "7d",
   });
 
+  console.log("Mencoba set cookie dengan token:", token);
+
   res.cookie("jwt", token, {
-    maxAge: 7 * 24 * 60 * 60 * 1000, // MS
-    httpOnly: true, // prevent XSS attacks cross-site scripting attacks
-    sameSite: "strict", // CSRF attacks cross-site request forgery attacks
-    secure: process.env.NODE_ENV !== "development",
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
+
+  console.log("Cookie seharusnya sudah di-set");
 
   return token;
 };
